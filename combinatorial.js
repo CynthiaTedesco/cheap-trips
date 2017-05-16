@@ -1,13 +1,30 @@
 var Combinatorics = require('js-combinatorics');
 
-let nodes = ['MIL','ROM'];
+//let nodes = ['MIL','ROM'];
+//let edges = [
+//	{source:'BCN', destination:'MIL', weight:2},
+//	{source:'BCN', destination:'ROM', weight:1},
+//	{source:'ROM', destination:'MIL', weight:5},
+//	{source:'ROM', destination:'BCN', weight:2},
+//	{source:'MIL', destination:'ROM', weight:3},
+//	{source:'MIL', destination:'BCN', weight:4}]
+// CHEAPEST: BCN -MIL - ROM - BCN
+
+let nodes = ['MIL','ROM', 'VEN'];
 let edges = [
-	{source:'BCN', destination:'MIL', weight:2},
-	{source:'BCN', destination:'ROM', weight:1},
-	{source:'ROM', destination:'MIL', weight:5},
+	{source:'BCN', destination:'MIL', weight:5},
+	{source:'BCN', destination:'ROM', weight:5},
+    {source:'BCN', destination:'VEN', weight:1},
+	{source:'ROM', destination:'MIL', weight:3},
 	{source:'ROM', destination:'BCN', weight:2},
-	{source:'MIL', destination:'ROM', weight:3},
-	{source:'MIL', destination:'BCN', weight:4}];
+    {source:'ROM', destination:'VEN', weight:3},
+	{source:'MIL', destination:'ROM', weight:1},
+	{source:'MIL', destination:'BCN', weight:2},
+    {source:'MIL', destination:'VEN', weight:3},
+    {source:'VEN', destination:'ROM', weight:2},
+	{source:'VEN', destination:'BCN', weight:2},
+    {source:'VEN', destination:'MIL', weight:1}];
+//CHEAPEST: BCN - VEN - MIL -ROM - BCN
 
 var getWeight = function(source, destination){
 	let edge = edges.filter(function(e){
@@ -17,7 +34,11 @@ var getWeight = function(source, destination){
 	if (edge.length === 1){
 		return edge[0].weight;
 	} else {
-		return new Error("There are more than one price")
+        if (edge.length === 0){
+            return new Error("There are no information about edge between " + source + ' and ' + destination)
+        } else {
+            return new Error("There are more than one price for " + source + ' and ' + destination)
+        }
 	}
 }
 
