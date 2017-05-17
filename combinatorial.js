@@ -12,17 +12,17 @@ var Combinatorics = require('js-combinatorics');
 
 let nodes = ['MIL','ROM', 'VEN'];
 let edges = [
-	{source:'BCN', destination:'MIL', weight:5},
-	{source:'BCN', destination:'ROM', weight:5},
-    {source:'BCN', destination:'VEN', weight:1},
-	{source:'ROM', destination:'MIL', weight:3},
-	{source:'ROM', destination:'BCN', weight:2},
-    {source:'ROM', destination:'VEN', weight:3},
-	{source:'MIL', destination:'ROM', weight:1},
+	{source:'BCN', destination:'MIL', weight:5.1},
+	{source:'BCN', destination:'ROM', weight:5.4},
+    {source:'BCN', destination:'VEN', weight:1.56},
+	{source:'ROM', destination:'MIL', weight:3.3},
+	{source:'ROM', destination:'BCN', weight:2.2},
+    {source:'ROM', destination:'VEN', weight:3.2},
+	{source:'MIL', destination:'ROM', weight:1.43},
 	{source:'MIL', destination:'BCN', weight:2},
     {source:'MIL', destination:'VEN', weight:3},
-    {source:'VEN', destination:'ROM', weight:2},
-	{source:'VEN', destination:'BCN', weight:2},
+    {source:'VEN', destination:'ROM', weight:2.9},
+	{source:'VEN', destination:'BCN', weight:2.85},
     {source:'VEN', destination:'MIL', weight:1}];
 //CHEAPEST: BCN - VEN - MIL -ROM - BCN
 
@@ -72,17 +72,20 @@ var getMinPath = function() {
 	let ponderedPaths = getPonderedPaths();	
 
 	let MIN = 99999999;
-	var min_path;
+    let min_paths = [];
 	for(let i=0;i<ponderedPaths.length; i++){
 		let path = ponderedPaths[i];
 		if (path.weight < MIN){
-			min_path = path;
+            min_paths = [];
+            min_paths.push(path);
 			MIN = path.weight;
-		}
+		} else if (path.weight === MIN){
+            min_paths.push(path);
+        }
 	}
 
-	console.log(min_path);
-	return min_path;
+	console.log(min_paths);
+	return min_paths;
 }
 
 getMinPath();
