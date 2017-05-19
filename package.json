@@ -10,6 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "combinatorics": "^0.1.0",
-    "js-combinatorics": "^0.5.2"
+    "js-combinatorics": "^0.5.2",
+    "mocha": "^3.4.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0"
   }
 }

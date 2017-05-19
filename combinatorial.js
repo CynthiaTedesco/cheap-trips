@@ -1,33 +1,18 @@
 var Combinatorics = require('js-combinatorics');
+var data = require('./data');
 
-//let nodes = ['MIL','ROM'];
-//let edges = [
-//	{source:'BCN', destination:'MIL', weight:2},
-//	{source:'BCN', destination:'ROM', weight:1},
-//	{source:'ROM', destination:'MIL', weight:5},
-//	{source:'ROM', destination:'BCN', weight:2},
-//	{source:'MIL', destination:'ROM', weight:3},
-//	{source:'MIL', destination:'BCN', weight:4}]
-// CHEAPEST: BCN -MIL - ROM - BCN
+function Combinatorial() {}
 
-let nodes = ['MIL','ROM', 'VEN'];
-let edges = [
-	{source:'BCN', destination:'MIL', weight:5.1},
-	{source:'BCN', destination:'ROM', weight:5.4},
-    {source:'BCN', destination:'VEN', weight:1.56},
-	{source:'ROM', destination:'MIL', weight:3.3},
-	{source:'ROM', destination:'BCN', weight:2.2},
-    {source:'ROM', destination:'VEN', weight:3.2},
-	{source:'MIL', destination:'ROM', weight:1.43},
-	{source:'MIL', destination:'BCN', weight:2},
-    {source:'MIL', destination:'VEN', weight:3},
-    {source:'VEN', destination:'ROM', weight:2.9},
-	{source:'VEN', destination:'BCN', weight:2.85},
-    {source:'VEN', destination:'MIL', weight:1}];
-//CHEAPEST: BCN - VEN - MIL -ROM - BCN
+Combinatorial.prototype.getPermutations = function(array) {
+  var cmb = Combinatorics.permutation(array);
+	// console.log(cmb.toArray());
+	return cmb.toArray();
+};
+
+module.exports = Combinatorial;
 
 var getWeight = function(source, destination){
-	let edge = edges.filter(function(e){
+	let edge = data.edges().filter(function(e){
 		return e.source === source && e.destination === destination;
 	});
 
@@ -49,8 +34,12 @@ var getPermutations = function(array){
 }
 
 var getPonderedPaths = function(){
-	let paths = getPermutations(nodes);
-	let ponderedPaths = [];
+//	let paths = getPermutations(data.nodes());
+
+    var comb = new Combinatorial();
+    let paths = comb.getPermutations(data.nodes());
+	
+    let ponderedPaths = [];
 	let weight = 0;
 
 	for (let i = 0; i < paths.length; i++) {
@@ -87,6 +76,14 @@ var getMinPath = function() {
 	console.log(min_paths);
 	return min_paths;
 }
+
+function CartSummary() {}
+
+CartSummary.prototype.getSubtotal = function() {
+  return 0;
+};
+
+module.exports = CartSummary
 
 getMinPath();
 
