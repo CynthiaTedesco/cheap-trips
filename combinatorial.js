@@ -27,18 +27,22 @@ exports.getWeight = function(source, destination, edges){
 	}
 }
 
-exports.getPonderedPaths = function(){
-    let paths = exports.getPermutations(data.nodes());
+exports.getPonderedPaths = function(nodes, edges){
+	if (!nodes){
+		nodes = data.nodes();
+	}
+
+    let paths = exports.getPermutations(nodes);
 	
     let ponderedPaths = [];
 	let weight = 0;
 
 	for (let i = 0; i < paths.length; i++) {
-		weight = exports.getWeight('BCN',paths[i][0]);
+		weight = exports.getWeight('BCN',paths[i][0],edges);
 		for (let j = 1; j < paths[i].length; j++){
-			weight = weight + exports.getWeight(paths[i][j-1],paths[i][j]);
+			weight = weight + exports.getWeight(paths[i][j-1],paths[i][j],edges);
 		}
-		weight += exports.getWeight(paths[i][paths[i].length-1], 'BCN');
+		weight += exports.getWeight(paths[i][paths[i].length-1], 'BCN',edges);
 		ponderedPaths[i] = {path:paths[i], weight:weight};
 		weight = 0;
 	}
@@ -48,8 +52,8 @@ exports.getPonderedPaths = function(){
 	return ponderedPaths;
 }
 
-exports.getMinPath = function() {
-	let ponderedPaths = exports.getPonderedPaths();	
+exports.getMinPaths = function(nodes, edges) {
+	let ponderedPaths = exports.getPonderedPaths(nodes,edges);	
 
 	let MIN = 99999999;
     let min_paths = [];
@@ -68,4 +72,4 @@ exports.getMinPath = function() {
 	return min_paths;
 }
 
-// exports.getMinPath();
+exports.getMinPaths();
