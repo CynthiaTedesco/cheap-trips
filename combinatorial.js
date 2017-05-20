@@ -1,18 +1,18 @@
 var Combinatorics = require('js-combinatorics');
 var data = require('./data');
 
-function Combinatorial() {}
+var exports = module.exports = {};
 
-Combinatorial.prototype.getPermutations = function(array) {
-  var cmb = Combinatorics.permutation(array);
-	// console.log(cmb.toArray());
+exports.getPermutations = function(array){
+	var cmb = Combinatorics.permutation(array);
 	return cmb.toArray();
-};
+}
 
-module.exports = Combinatorial;
-
-var getWeight = function(source, destination){
-	let edge = data.edges().filter(function(e){
+exports.getWeight = function(source, destination, edges){
+	if (!edges){
+		edges = data.edges();
+	}
+	let edge = edges.filter(function(e){
 		return e.source === source && e.destination === destination;
 	});
 
@@ -20,34 +20,25 @@ var getWeight = function(source, destination){
 		return edge[0].weight;
 	} else {
         if (edge.length === 0){
-            return new Error("There are no information about edge between " + source + ' and ' + destination)
+            return new Error("There is no information about edge between " + source + ' and ' + destination)
         } else {
             return new Error("There are more than one price for " + source + ' and ' + destination)
         }
 	}
 }
 
-var getPermutations = function(array){
-	var cmb = Combinatorics.permutation(array);
-	// console.log(cmb.toArray());
-	return cmb.toArray();
-}
-
-var getPonderedPaths = function(){
-//	let paths = getPermutations(data.nodes());
-
-    var comb = new Combinatorial();
-    let paths = comb.getPermutations(data.nodes());
+exports.getPonderedPaths = function(){
+    let paths = exports.getPermutations(data.nodes());
 	
     let ponderedPaths = [];
 	let weight = 0;
 
 	for (let i = 0; i < paths.length; i++) {
-		weight = getWeight('BCN',paths[i][0]);
+		weight = exports.getWeight('BCN',paths[i][0]);
 		for (let j = 1; j < paths[i].length; j++){
-			weight = weight + getWeight(paths[i][j-1],paths[i][j]);
+			weight = weight + exports.getWeight(paths[i][j-1],paths[i][j]);
 		}
-		weight += getWeight(paths[i][paths[i].length-1], 'BCN');
+		weight += exports.getWeight(paths[i][paths[i].length-1], 'BCN');
 		ponderedPaths[i] = {path:paths[i], weight:weight};
 		weight = 0;
 	}
@@ -57,8 +48,8 @@ var getPonderedPaths = function(){
 	return ponderedPaths;
 }
 
-var getMinPath = function() {
-	let ponderedPaths = getPonderedPaths();	
+exports.getMinPath = function() {
+	let ponderedPaths = exports.getPonderedPaths();	
 
 	let MIN = 99999999;
     let min_paths = [];
@@ -77,13 +68,4 @@ var getMinPath = function() {
 	return min_paths;
 }
 
-function CartSummary() {}
-
-CartSummary.prototype.getSubtotal = function() {
-  return 0;
-};
-
-module.exports = CartSummary
-
-getMinPath();
-
+// exports.getMinPath();

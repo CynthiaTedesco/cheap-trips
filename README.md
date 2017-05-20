@@ -8,7 +8,6 @@ Sistemita que, dado un conjunto de ciudades, permuta entre ellas generando todas
 El camino más corto se calcula en base a los *pesos* entre las ciudades. Los pesos están dados por el valor del transporte, con lo cuál el camino más corto, en este caso, es el camino más barato.
 
 ### Proximos pasos
-* Agregar tests
 * Desarrollar el front end
 * Agregar la posibilidad de agregar más de un peso (en el caso de que se consideren distinto tipo de transportes: bus, tren, avion)
 ** Y con esto, mostrar, como otra variable, la cantidad de tiempo que lleva cada trayecto.
