@@ -47,7 +47,7 @@ exports.getPonderedPaths = function(nodes, edges){
 		weight = 0;
 	}
 	console.log('----------------------------------------------------- ');
-	console.log(ponderedPaths);
+	// console.log(ponderedPaths);
 	console.log('----------------------------------------------------- ');
 	return ponderedPaths;
 }
@@ -72,4 +72,22 @@ exports.getMinPaths = function(nodes, edges) {
 	return min_paths;
 }
 
-exports.getMinPaths();
+exports.getFirstMinPaths = function(nodes, edges){
+	let ponderedPaths = exports.getPonderedPaths(nodes,edges);
+
+	ponderedPaths.sort(function(a, b){
+	    var w1 = a.weight,
+	        w2 = b.weight;
+	    // Compare the 2 dates
+	    if(w1 < w2) return -1;
+	    if(w1 > w2) return 1;
+	    return 0;
+	});
+
+	for(var i = 0; i<16;i++){
+		console.log(ponderedPaths[i]);
+	}
+}
+
+// exports.getMinPaths();
+exports.getFirstMinPaths();
