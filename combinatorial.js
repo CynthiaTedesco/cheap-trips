@@ -8,9 +8,14 @@ exports.getPermutations = function(array){
 	return cmb.toArray();
 }
 
-exports.getCompany = function(source, destination, edges){
+exports.getDuration = function(source, destination, edges){
     let edge = exports.getEdge(source, destination, edges);
-    return edge.company;
+    return edge.duration;
+}
+
+exports.getOperator = function(source, destination, edges){
+    let edge = exports.getEdge(source, destination, edges);
+    return edge.operator;
 }
 
 exports.getWeight = function(source, destination, edges){
@@ -84,6 +89,7 @@ exports.getMinPaths = function(nodes, edges) {
 
 exports.getFirstMinPaths = function(nodes, edges){
 	let ponderedPaths = exports.getPonderedPaths(nodes,edges);
+    var paths_quantity = 15;
 
 	ponderedPaths.sort(function(a, b){
 	    var w1 = a.weight,
@@ -94,9 +100,16 @@ exports.getFirstMinPaths = function(nodes, edges){
 	    return 0;
 	});
 
-	for(var i = 0; i<16;i++){
-		console.log(ponderedPaths[i]);
-	}
+    if (ponderedPaths.length > paths_quantity){
+        var firstPaths = [];
+        for(var i = 0; i<paths_quantity;i++){
+            firstPaths.push(ponderedPaths[i]);
+            console.log(ponderedPaths[i]);
+        }
+        return firstPaths;
+    }
+    
+    return ponderedPaths;
 }
 
 // exports.getMinPaths();
