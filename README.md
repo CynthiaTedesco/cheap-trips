@@ -10,6 +10,5 @@ El camino más corto se calcula en base a los *pesos* entre las ciudades. Los pe
 ### Proximos pasos
 * Desarrollar el front end
 * Agregar la posibilidad de agregar más de un peso (en el caso de que se consideren distinto tipo de transportes: bus, tren, avion)
-** Y con esto, mostrar, como otra variable, la cantidad de tiempo que lleva cada trayecto.
 * Dibujar el grafo
 * Ver de integrar con goEuro o similar
