@@ -8,21 +8,6 @@ exports.getPermutations = function(array){
 	return cmb.toArray();
 }
 
-exports.getDuration = function(source, destination, edges){
-    let edge = exports.getEdge(source, destination, edges);
-    return edge.duration;
-}
-
-exports.getOperator = function(source, destination, edges){
-    let edge = exports.getEdge(source, destination, edges);
-    return edge.operator;
-}
-
-exports.getWeight = function(source, destination, edges){
-	let edge = exports.getEdge(source, destination, edges);
-    return edge.weight;
-}
-
 exports.getEdge = function(source, destination, edges){
     if (!edges){
         edges = data.edges;
@@ -51,19 +36,35 @@ exports.getPonderedPaths = function(nodes, edges){
 	
     let ponderedPaths = [];
 	let weight = 0;
+    let operators = new Set();
+    let duration = 0;
 
 	for (let i = 0; i < paths.length; i++) {
-		weight = exports.getWeight('BCN',paths[i][0],edges);
+        var edge = exports.getEdge('BCN',paths[i][0],edges);
+		weight = edge.weight;
+        duration = edge.duration;
+        operators.add(edge.operator);
+        
 		for (let j = 1; j < paths[i].length; j++){
-			weight = weight + exports.getWeight(paths[i][j-1],paths[i][j],edges);
+            edge = exports.getEdge(paths[i][j-1],paths[i][j],edges);
+			weight += edge.weight;
+            duration += edge.duration;
+            operators.add(edge.operator);
 		}
-		weight += exports.getWeight(paths[i][paths[i].length-1], 'BCN',edges);
-		ponderedPaths[i] = {path:paths[i], weight:weight};
+        
+        edge = exports.getEdge(paths[i][paths[i].length-1], 'BCN',edges);
+		weight += edge.weight;
+        duration += edge.duration;
+        operators.add(edge.operator);
+		ponderedPaths[i] = {path:paths[i], weight:weight, operators:operators, duration:duration};
+
 		weight = 0;
+        duration = 0;
+        operators = new Set();
 	}
-	console.log('----------------------------------------------------- ');
-	// console.log(ponderedPaths);
-	console.log('----------------------------------------------------- ');
+//	console.log('----------------------------------------------------- ');
+//    console.log(ponderedPaths);
+//	console.log('----------------------------------------------------- ');
 	return ponderedPaths;
 }
 

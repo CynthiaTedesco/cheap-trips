@@ -14,17 +14,7 @@ describe('combinatorial', function () {
 
     describe('weights', function () {
         it('if the edge wanted has been pased, it returns the right weight', function () {
-            expect(combinatorial.getWeight('BCN', 'MIL', data.edges)).to.equal(5.1);
-        });
-        it('if more than one entries for the same pair of cities has been pased, it returns an error', function () {
-            assert.throws(function () {
-                combinatorial.getWeight('BCN', 'MIL', data.moreThanOneEdges);
-            }, Error, 'There are more than one price for BCN and MIL');
-        });
-        it('if has not been passed the wanted edge, it returns an error', function () {
-            assert.throws(function () {
-                combinatorial.getWeight('ROM', 'MIL', data.noEdge);
-            }, Error, 'There is no information about edge between ROM and MIL');
+            expect(combinatorial.getEdge('BCN', 'MIL', data.edges).weight).to.equal(5.1);
         });
     });
 
@@ -35,7 +25,7 @@ describe('combinatorial', function () {
         });
         it('must failed in order to wanted edge is no present', function(){
             assert.throws(function(){
-                combinatorial.getWeight('ROM', 'MIL', data.noEdge);
+                combinatorial.getEdge('ROM', 'MIL', data.noEdge);
             }, Error, 'There is no information about edge between ROM and MIL');
         });
         it('must failed in order to t   here is more than one entries for the same pair of cities', function () {
@@ -46,35 +36,15 @@ describe('combinatorial', function () {
         
     });
     
-    describe('companies', function () {
-        it('if the edge wanted has been pased, it returns the right company', function () {
-            expect(combinatorial.getOperator('BCN', 'MIL', data.edges)).to.equal('Ryanair');
-        });
-        it('if more than one entries for the same pair of cities has been pased, it returns an error', function () {
-            assert.throws(function () {
-                combinatorial.getOperator('BCN', 'MIL', data.moreThanOneEdges);
-            }, Error, 'There are more than one price for BCN and MIL');
-        });
-        it('if has not been passed the wanted edge, it returns an error', function () {
-            assert.throws(function () {
-                combinatorial.getOperator('ROM', 'MIL', data.noEdge);
-            }, Error, 'There is no information about edge between ROM and MIL');
+    describe('operators', function () {
+        it('if the edge wanted has been pased, it returns the right operator', function () {
+            expect(combinatorial.getEdge('BCN', 'MIL', data.edges).operator).to.equal('Ryanair');
         });
     });
     
-    describe('times', function () {
+    describe('durations', function () {
         it('if the edge wanted has been pased, it returns the right duration', function () {
-            expect(combinatorial.getDuration('BCN', 'MIL', data.edges)).to.equal(105);
-        });
-        it('if more than one entries for the same pair of cities has been pased, it returns an error', function () {
-            assert.throws(function () {
-                combinatorial.getDuration('BCN', 'MIL', data.moreThanOneEdges);
-            }, Error, 'There are more than one price for BCN and MIL');
-        });
-        it('if has not been passed the wanted edge, it returns an error', function () {
-            assert.throws(function () {
-                combinatorial.getDuration('ROM', 'MIL', data.noEdge);
-            }, Error, 'There is no information about edge between ROM and MIL');
+            expect(combinatorial.getEdge('BCN', 'MIL', data.edges).duration).to.equal(105);
         });
     });
 
@@ -83,6 +53,14 @@ describe('combinatorial', function () {
             it('it must return an array of pondered paths (pondered means that they have weights)', function () {
                 expect(combinatorial.getPonderedPaths(data.nodes, data.edges).length).to.eql(2);
                 expect(combinatorial.getPonderedPaths(data.nodes, data.edges)[0].weight).to.not.be.undefined;
+            });
+            it('it must return an array of pondered paths with their respectives operators', function () {
+                expect(combinatorial.getPonderedPaths(data.nodes, data.edges)[0].operators).to.not.be.undefined;
+                expect(combinatorial.getPonderedPaths(data.nodes, data.edges)[0].operators).to.be.a('Set');
+            });
+            it('it must return an array of pondered paths with their total duration', function () {
+                expect(combinatorial.getPonderedPaths(data.nodes, data.edges)[0].duration).to.not.be.undefined;
+                expect(combinatorial.getPonderedPaths(data.nodes, data.edges)[0].duration).to.be.a('number');
             });
         });
 
