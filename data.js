@@ -1,6 +1,6 @@
-// var nodes = ['MIL','LAM','ROM','VEN','NAP','FIO','CAT'];//'PAL''SIR'
-var nodes = ['LAM','ROM','VEN','NAP','FIO','CAT'];//'PAL''SIR'
-var edges = [
+// exports.nodes = ['MIL','LAM','ROM','VEN','NAP','FIO','CAT'];//'PAL''SIR'
+exports.nodes = ['LAM','ROM','VEN','NAP','FIO','CAT'];//'PAL''SIR'
+exports.edges = [
         {source:'BCN', destination:'MIL', weight:81, conveyance: 'plane', operator: 'Ryanair', duration:105},
         {source:'BCN', destination:'LAM', weight:194, conveyance: 'plane', operator: 'Alitalia', duration:235},
         {source:'BCN', destination:'NAP', weight:95, conveyance: 'plane', operator: 'Vueling', duration:115},
@@ -84,13 +84,4 @@ var edges = [
         {source:'FIO', destination:'CAT', weight:24, conveyance: 'plane', operator: 'Ryanair', duration:90},
         {source:'ROM', destination:'PAL', weight:29, conveyance: 'plane', operator: 'Ryanair', duration:70},
         {source:'ROM', destination:'SIR', weight:24, conveyance: 'plane', operator: 'Ryanair', duration:75},
-        {source:'ROM', destination:'CAT', weight:24, conveyance: 'plane', operator: 'Ryanair', duration:115}]; 
-
-module.exports = {
-    nodes: function(){
-        return nodes;
-    },
-    edges: function(){
-        return edges;
-    }
-}
+        {source:'ROM', destination:'CAT', weight:24, conveyance: 'plane', operator: 'Ryanair', duration:115}];

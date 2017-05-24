@@ -8,30 +8,40 @@ exports.getPermutations = function(array){
 	return cmb.toArray();
 }
 
+exports.getCompany = function(source, destination, edges){
+    let edge = exports.getEdge(source, destination, edges);
+    return edge.company;
+}
+
 exports.getWeight = function(source, destination, edges){
-	if (!edges){
-		edges = data.edges();
-	}
-	let edge = edges.filter(function(e){
+	let edge = exports.getEdge(source, destination, edges);
+    return edge.weight;
+}
+
+exports.getEdge = function(source, destination, edges){
+    if (!edges){
+        edges = data.edges;
+    }
+    
+    let edge = edges.filter(function(e){
 		return e.source === source && e.destination === destination;
 	});
 
 	if (edge.length === 1){
-		return edge[0].weight;
+		return edge[0];
 	} else {
         if (edge.length === 0){
-            return new Error("There is no information about edge between " + source + ' and ' + destination)
+            throw new Error("There is no information about edge between " + source + ' and ' + destination)
         } else {
-            return new Error("There are more than one price for " + source + ' and ' + destination)
+            throw new Error("There are more than one price for " + source + ' and ' + destination)
         }
 	}
 }
 
 exports.getPonderedPaths = function(nodes, edges){
 	if (!nodes){
-		nodes = data.nodes();
+		nodes = data.nodes;
 	}
-
     let paths = exports.getPermutations(nodes);
 	
     let ponderedPaths = [];

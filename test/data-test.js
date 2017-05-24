@@ -1,0 +1,9 @@
+exports.nodes = ['MIL','ROM'];
+exports.edges = [
+        {source:'BCN', destination:'MIL', weight:5.1},
+        {source:'BCN', destination:'ROM', weight:5.4},
+        {source:'ROM', destination:'MIL', weight:3.3},
+        {source:'ROM', destination:'BCN', weight:2.2},
+        {source:'MIL', destination:'ROM', weight:1.43},
+        {source:'MIL', destination:'BCN', weight:2},
+        {source:'MIL', destination:'VEN', weight:3}];
