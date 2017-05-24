@@ -1,4 +1,4 @@
-var cheapTrips = angular.module('cheap-trips', []);
+var cheapTrips = angular.module('cheapTrips', []);
 
 function mainController($scope, $http) {
     $scope.formData = {};
@@ -7,20 +7,25 @@ function mainController($scope, $http) {
     $http.get('/paths')
         .success(function() {
             console.log('success');
+            comb.getFirstMinPaths();
         })
         .error(function(data) {
             console.log('Error: ' + data);
         });
 
-    $scope.createTodo = function() {
-        $http.post('/paths', $scope.formData)
-            .success(function(data) {
-                $scope.formData = {}; // clear the form so our user is ready to enter another
-                $scope.todos = data;
-                console.log(data);
-            })
-            .error(function(data) {
-                console.log('Error: ' + data);
-            });
-    };
+    /*$http directive is used to communicate ot the server */
+    $scope.response = {}
+
+    $scope.calculate = function () {
+        /*executed when submit is clicked*/
+        console.log("inside click");
+        console.log($scope.formData);
+
+        $http.get('/paths', $scope.formData)
+            .success(function (response) {
+            /*executed when server responds back*/
+            console.log(response);
+            $scope.response.data = response;
+        });
+    }
 }

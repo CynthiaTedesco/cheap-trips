@@ -114,4 +114,4 @@ exports.getFirstMinPaths = function(nodes, edges){
 }
 
 // exports.getMinPaths();
-exports.getFirstMinPaths();
+// exports.getFirstMinPaths();

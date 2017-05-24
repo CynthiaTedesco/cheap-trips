@@ -5,6 +5,7 @@ var app      = express();                               // create our app w/ exp
 var morgan = require('morgan');             // log requests to the console (express4)
 var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
 var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
+var combinatorial = require('./combinatorial.js');
 
 // configuration =================
 
@@ -23,6 +24,12 @@ console.log("App listening on port 2000");
 
 // routes ======================================================================
 
-app.get('*', function(req, res) {
+app.get('/', function(req, res) {
     res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+
+app.get('/paths', function(req, res) {
+    console.log('inside serveeeer');
+    res.send(combinatorial.getFirstMinPaths());
+    // console.log();
 });
