@@ -32,8 +32,30 @@ app.get('/', function(req, res) {
     res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
+var cities = ['BCN', 'MIL'];
+
 app.get('/paths', function(req, res) {
-    console.log('inside serveeeer');
-    res.render('./paths.ejs');
+    var locals = {
+        cities: cities
+    }
+    res.render('./paths.ejs', locals);
     // res.send(combinatorial.getFirstMinPaths());
 });
+
+app.get('/add-city', function(req, res){
+    newCity = req.query.name.toUpperCase();
+    console.log(cities);
+    console.log(req.query.name);
+    console.log(cities.indexOf(newCity));
+    if (cities.indexOf(newCity) === -1){
+        cities.push(newCity);
+    }
+    
+    res.redirect('/paths');
+})
+
+app.get('/remove-city', function(req, res){
+    console.log('removing');
+    cities.splice(cities.indexOf(req.query.name),1);
+    res.redirect('/paths');
+})

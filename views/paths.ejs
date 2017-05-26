@@ -2,12 +2,21 @@
 <html>
 	<head>
 	    <% include ./partials/header.ejs %>
+	    <
 	</head>
 	<body>
-		<div class="chip">
-		  <!-- <img src="img_avatar.jpg" alt="Person" width="96" height="96"> -->
-		  John Doe
-		  <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
+		<div class="container">
+			<div>
+				<% for(var i=0; i<cities.length; i++) {%>
+				<div class="chip">
+				  <%= cities[i] %>
+				  <span class="closebtn" onclick="removeCity('<%=cities[i]%>')">&times;</span>
+				</div>
+				<% } %>
+			</div>
+			<div>
+				<input type="text" name="new-city" onkeydown="addCity(event, this)">
+			</div>
 		</div>
 	</body>
 </html>

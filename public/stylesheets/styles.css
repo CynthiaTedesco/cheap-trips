@@ -20,3 +20,19 @@
 .closebtn:hover {
     color: #000;
 }
+
+input {
+    padding: 10px;
+    border: none;
+    border-bottom: solid 1px #e4e1e1;
+    transition: border 0.3s;
+}
+
+input:focus{
+    border-bottom: solid 1px #b7b2b2;
+    outline: none;
+}
+
+.container{
+    padding: 10%;
+}
