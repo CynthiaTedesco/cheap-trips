@@ -36,7 +36,8 @@ var cities = ['BCN', 'MIL'];
 
 app.get('/paths', function(req, res) {
     var locals = {
-        cities: cities
+        cities: cities,
+        permutations: combinatorial.getPermutations(cities)
     }
     res.render('./paths.ejs', locals);
     // res.send(combinatorial.getFirstMinPaths());

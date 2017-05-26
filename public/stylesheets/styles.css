@@ -6,6 +6,7 @@
     line-height: 50px;
     border-radius: 25px;
     background-color: #f1f1f1;
+    margin-top: 1em;
 }
 
 .closebtn {
@@ -35,4 +36,13 @@ input:focus{
 
 .container{
     padding: 10%;
+}
+
+.grid{
+    margin-top:2em;
+}
+
+.table>tbody>tr>td{
+    vertical-align: inherit;
+    text-align: center;
 }

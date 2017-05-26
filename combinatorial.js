@@ -5,6 +5,7 @@ var exports = module.exports = {};
 
 exports.getPermutations = function(array){
 	var cmb = Combinatorics.permutation(array);
+	console.log(cmb.toArray());
 	return cmb.toArray();
 }
 
