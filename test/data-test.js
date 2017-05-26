@@ -1,4 +1,4 @@
-exports.nodes = ['MIL','ROM'];
+exports.nodes = [{name:'MIL'},{name:'ROM'}];
 exports.edges = [
         {source:'BCN', destination:'MIL', weight:5.1, conveyance: 'plane', operator: 'Ryanair', duration:105},
         {source:'BCN', destination:'ROM', weight:5.4, conveyance: 'plane', operator: 'Vueling', duration:110},

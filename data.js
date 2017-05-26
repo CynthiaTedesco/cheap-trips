@@ -1,5 +1,5 @@
-// exports.nodes = ['MIL','LAM','ROM','VEN','NAP','FIO','CAT'];//'PAL''SIR'
-exports.nodes = ['LAM','ROM','VEN','NAP','FIO','CAT'];//'PAL''SIR'
+// exports.nodes = [{name:'MIL'},{name:'LAM'},{name:'ROM'},{name:'VEN'},{name:'NAP'},{name:'FIO'},{name:'CAT'}];//'PAL''SIR'
+exports.nodes = [{name:'LAM'},{name:'ROM'},{name:'VEN'},{name:'NAP'},{name:'FIO'},{name:'CAT'}];//'PAL''SIR'
 exports.edges = [
         {source:'BCN', destination:'MIL', weight:81, conveyance: 'plane', operator: 'Ryanair', duration:105},
         {source:'BCN', destination:'LAM', weight:194, conveyance: 'plane', operator: 'Alitalia', duration:235},

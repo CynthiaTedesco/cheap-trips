@@ -1,5 +1,6 @@
 var Combinatorics = require('js-combinatorics');
 var data = require('./data');
+var origin = 'BCN', destination = 'BCN';
 
 var exports = module.exports = {};
 
@@ -8,7 +9,6 @@ exports.getPermutations = function(array){
 		return [];
 	}
 	var cmb = Combinatorics.permutation(array);
-	console.log(cmb.toArray());
 	return cmb.toArray();
 }
 
@@ -44,19 +44,19 @@ exports.getPonderedPaths = function(nodes, edges){
     let duration = 0;
 
 	for (let i = 0; i < paths.length; i++) {
-        var edge = exports.getEdge('BCN',paths[i][0],edges);
+        var edge = exports.getEdge(origin,paths[i][0].name,edges);
 		weight = edge.weight;
         duration = edge.duration;
         operators.add(edge.operator);
         
 		for (let j = 1; j < paths[i].length; j++){
-            edge = exports.getEdge(paths[i][j-1],paths[i][j],edges);
+            edge = exports.getEdge(paths[i][j-1].name,paths[i][j].name,edges);
 			weight += edge.weight;
             duration += edge.duration;
             operators.add(edge.operator);
 		}
         
-        edge = exports.getEdge(paths[i][paths[i].length-1], 'BCN',edges);
+        edge = exports.getEdge(paths[i][paths[i].length-1].name, destination,edges);
 		weight += edge.weight;
         duration += edge.duration;
         operators.add(edge.operator);
@@ -73,7 +73,16 @@ exports.getPonderedPaths = function(nodes, edges){
 }
 
 exports.getMinPaths = function(nodes, edges) {
-	let ponderedPaths = exports.getPonderedPaths(nodes,edges);	
+	var o = nodes.filter(function(city){ return city.isOrigin; });
+	if (o.length > 0) {
+		origin = o[0];
+	}
+	var d = nodes.filter(function(city){ return city.isDestination; });
+	if (d.length > 0) {
+		destination = d[0];
+	}
+
+	let ponderedPaths = exports.getPonderedPaths(nodes,edges);
 
 	let MIN = 99999999;
     let min_paths = [];
