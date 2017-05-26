@@ -8,69 +8,79 @@
 			<div>
 				<% for(var i=0; i<cities.length; i++) {%>
 				<div class="chip">
-				  <%= cities[i] %>
-				  <span class="closebtn" onclick="removeCity('<%=cities[i]%>')">&times;</span>
+				  <%= cities[i].name %>
+				  <span class="closebtn" onclick="removeCity('<%=cities[i].name%>')">&times;</span>
 				</div>
 				<% } %>
 			</div>
 			<div>
-				<input type="text" name="new-city" onkeydown="addCity(event, this)">
+				<input id="newCity" type="text" name="new-city" onkeydown="addCity(event)">
+				<input id="isOrigin" type="checkbox" name="fixed" value="source" onkeydown="addCity(event)" <% if(originCity) { %> disabled <% } %>>Ciudad origen
+				<input id="isDestination" type="checkbox" name="fixed" value="destination" onkeydown="addCity(event)" <% if(destinationCity) { %> disabled <% } %>>Ciudad destino<br>
 			</div>
-			<div class="grid">
+			<form class="grid" action="/calculate">
 				<table class="table table-bordered table-hover" id="tab_logic">
-				<thead>
-					<tr >
-						<th class="text-center">
-							Origen
-						</th>
-						<th class="text-center">
-							Destino
-						</th>
-						<th class="text-center">
-							Operador
-						</th>
-						<th class="text-center">
-							Duración
-						</th>
-						<th class="text-center">
-							Precio
-						</th>
-						<th class="text-center"></th>
-					</tr>
-				</thead>
-				<tbody>
-					<% for(var i=0; i<permutations.length; i++) {%>
-					<tr id='addr0'>
-						<td>
-							<%= permutations[i][0] %>
-						</td>
-						<td>
-							<%= permutations[i][1] %>
-						</td>
-						<td>
-						<input type="text" name='operator'  placeholder='Operador' class="form-control"/>
-						</td>
-						<td>
-						<input type="text" name='duration' placeholder='Duración' class="form-control"/>
-						</td>
-						<td>
-						<input type="text" name='price' placeholder='Precio' class="form-control"/>
-						</td>
-						</td>
-						<td>
-					</tr>
-					<% }%>
-                    <tr id='addr1'></tr>
-				</tbody>
-			</table>
-				<!-- <div class="row">
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-3"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-1"></div>
-				</div>	 -->
+					<thead>
+						<tr >
+							<th class="text-center">
+								Origen
+							</th>
+							<th class="text-center">
+								Destino
+							</th>
+							<th class="text-center">
+								Operador
+							</th>
+							<th class="text-center">
+								Duración
+							</th>
+							<th class="text-center">
+								Precio
+							</th>
+							<th class="text-center"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<% for(var i=0; i<edges.length; i++) {%>
+						<tr id='addr0'>
+							<td <% if (edges[i].source === originCity.name) { %> class="origin" <% }%> >
+								<%= edges[i].source %>
+							</td>
+							<td <% if (edges[i].destination === destinationCity.name) { %> class="origin" <% }%> >
+								<%= edges[i].destination %>
+							</td>
+							<td>
+								<% if(edges[i].operator){%>
+									<%= edges[i].operator %>
+								<%} else { %>
+									<input type="text" name='operator'  placeholder='Operador' class="form-control" required="true"/>
+								<% } %>
+							</td>
+							<td>
+								<% if(edges[i].duration){%>
+									<%= edges[i].duration %>
+								<%} else { %>
+									<input type="text" name='duration' placeholder='Duración' class="form-control" required="true"/>
+								<% } %>
+							</td>
+							<td>
+								<% if(edges[i].price){%>
+									<%= edges[i].price %>
+								<%} else { %>
+									<input type="text" name='price' placeholder='Precio' class="form-control" required="true"/>
+								<% } %>
+							</td>
+							</td>
+							<td>
+						</tr>
+						<% }%>
+	                    <tr id='addr1'></tr>
+					</tbody>
+				</table>
+				<input type="submit" name="calculate" value="Calcular caminos"/>
+			</form>
+			<div class="results">
+				<%= results %>
 			</div>
 		</div>
 	</body>

@@ -32,12 +32,38 @@ app.get('/', function(req, res) {
     res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
-var cities = ['BCN', 'MIL'];
+var results;
+var cities = [{name:'BCN'}, {name:'MIL'}];
+var permutations, edges;
+
+var calculatePermutations = function(){
+    permutations = combinatorial.getPermutations(cities);
+    console.log('permutations:');
+    console.log(permutations);
+    edges = [];
+    for (var i=0; i<permutations.length;i++){
+        edges.push({
+            source: permutations[i][0].name,
+            destination: permutations[i][1].name,
+            operator: '',
+            duration: '',
+            price: ''
+        });
+    }
+
+}
 
 app.get('/paths', function(req, res) {
+    calculatePermutations();
+    var originCity = cities.filter(function(city){return city.isOrigin}).length > 0 ? cities.filter(function(city){return city.isOrigin})[0] : '';
+    var destinationCity = cities.filter(function(city){return city.isDestination}).length > 0 ? cities.filter(function(city){return city.isDestination})[0] : '';
+    
     var locals = {
         cities: cities,
-        permutations: combinatorial.getPermutations(cities)
+        edges: edges,
+        results: results,
+        originCity: originCity,
+        destinationCity: destinationCity
     }
     res.render('./paths.ejs', locals);
     // res.send(combinatorial.getFirstMinPaths());
@@ -45,18 +71,29 @@ app.get('/paths', function(req, res) {
 
 app.get('/add-city', function(req, res){
     newCity = req.query.name.toUpperCase();
-    console.log(cities);
-    console.log(req.query.name);
-    console.log(cities.indexOf(newCity));
-    if (cities.indexOf(newCity) === -1){
-        cities.push(newCity);
+    if (cities.filter(function(city) {return city.name === newCity}).length === 0){
+        var newCityObj = {}
+        newCityObj.name = newCity;
+        if (req.query.isOrigin){
+            newCityObj.isOrigin = true;
+        }
+        if(req.query.isDestination){
+            newCityObj.isDestination = true;
+        }
+        cities.push(newCityObj);
     }
     
     res.redirect('/paths');
-})
+});
 
 app.get('/remove-city', function(req, res){
-    console.log('removing');
-    cities.splice(cities.indexOf(req.query.name),1);
+    var index = cities.map(function(e) { return e.name; }).indexOf(req.query.name)
+    cities.splice(index,1);
     res.redirect('/paths');
-})
+});
+
+app.get('/calculate', function (req, res) {
+    console.log('calculating...');
+    results = combinatorial.getFirstMinPaths(cities, edges);
+    res.redirect('/paths');
+});

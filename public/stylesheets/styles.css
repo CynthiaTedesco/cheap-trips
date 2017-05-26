@@ -6,7 +6,7 @@
     line-height: 50px;
     border-radius: 25px;
     background-color: #f1f1f1;
-    margin-top: 1em;
+    margin: 1em 0.1em;
 }
 
 .closebtn {
@@ -34,15 +34,41 @@ input:focus{
     outline: none;
 }
 
+input[type='submit']{
+    float: right;
+    border-radius: 0.5em;
+    background: #c1c1c5;
+    padding: 1em;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+input[type='submit']:hover{
+    font-weight: 600;
+}
+
+input[type='checkbox']{
+    margin: 0.5em;
+}
+
 .container{
     padding: 10%;
 }
 
 .grid{
     margin-top:2em;
+    margin-bottom: 15%;
 }
 
 .table>tbody>tr>td{
     vertical-align: inherit;
     text-align: center;
+}
+
+div.results {
+    background-color: #bcf1bc;
+}
+
+.origin, .destination{
+    background-color: #bfe8a1;
 }

@@ -1,6 +1,20 @@
-var addCity = function(event, input){
-    if (event.keyCode && event.keyCode === 13 && input.value){
-        window.location.href = "/add-city?name="+input.value;
+var addCity = function(event){
+    if (event.keyCode && event.keyCode === 13){
+    	var newCityInput = $('#newCity');
+    	var isOrigin = $('#isOrigin');
+    	var isDestination = $('#isDestination');
+
+    	if (newCityInput[0] && newCityInput[0].value){
+    		var path = '/add-city?name='+newCityInput[0].value;
+    		if(isOrigin[0] && isOrigin[0].checked){
+    			path += '&isOrigin=true';
+    		}
+    		if(isDestination[0] && isDestination[0].checked){
+    			path += '&isDestination=true';
+    		}
+
+	        window.location.href = path;
+    	}
     }
 }
 

@@ -4,6 +4,9 @@ var data = require('./data');
 var exports = module.exports = {};
 
 exports.getPermutations = function(array){
+	if (array.length < 2){
+		return [];
+	}
 	var cmb = Combinatorics.permutation(array);
 	console.log(cmb.toArray());
 	return cmb.toArray();
