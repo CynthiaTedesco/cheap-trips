@@ -1,33 +1,72 @@
 var Combinatorics = require('js-combinatorics');
 var data = require('./data');
-var origin = 'BCN', destination = 'BCN';
+
+var defaultOrigin = {name:'BCN', isOrigin:true};
+var defaultDestination = {name:'BCN', isDestination:true};
+var origin = defaultOrigin;
+var destination = defaultDestination;
+
+var innerCities = [];
 
 var exports = module.exports = {};
 
-exports.getPermutations = function(array){
-	if (array.length < 2){
+// returns all possible paths between inner nodes
+exports.getPermutations = function(nodes){
+	if (nodes.length < 2){
+		innerCities = [];
 		return [];
 	}
-	var cmb = Combinatorics.permutation(array);
+
+	innerCities = [];
+	origin = defaultOrigin;
+	destination = defaultDestination;
+	for (var i = 0; i < nodes.length; i++) {
+		if (nodes[i].isOrigin || nodes[i].isDestination){
+			if (nodes[i].isOrigin){
+				origin = nodes[i];
+			}
+			if (nodes[i].isDestination) {
+				destination = nodes[i];
+			}
+		} else {
+			innerCities.push(nodes[i]);
+		}
+	}
+
+	var cmb = Combinatorics.permutation(innerCities);
 	return cmb.toArray();
 }
 
-exports.getEdge = function(source, destination, edges){
+// returns an array with edges between inner cities and origin/destination
+exports.completeEdges = function(){
+	var morePermutations = [];
+	for (var i = 0; i < innerCities.length; i++){
+		morePermutations.push(getEmptyEdgeObj(getOrigin().name, innerCities[i].name));
+		morePermutations.push(getEmptyEdgeObj(innerCities[i].name, getDestinationName()));
+	}
+	return morePermutations;
+}
+
+var getEmptyEdgeObj = function(from, to) {
+	return {from: from, to: to, operator: '', duration: '', weight: null};
+}
+
+exports.getEdge = function(origin, destination, edges){
     if (!edges){
         edges = data.edges;
     }
     
     let edge = edges.filter(function(e){
-		return e.source === source && e.destination === destination;
+		return e.from === origin.name && e.to === destination.name;
 	});
 
 	if (edge.length === 1){
 		return edge[0];
 	} else {
         if (edge.length === 0){
-            throw new Error("There is no information about edge between " + source + ' and ' + destination)
+            throw new Error("There is no information about edge between " + origin.name + ' and ' + destination.name)
         } else {
-            throw new Error("There are more than one price for " + source + ' and ' + destination)
+            throw new Error("There are more than one weight for " + origin.name + ' and ' + destination.name)
         }
 	}
 }
@@ -36,6 +75,7 @@ exports.getPonderedPaths = function(nodes, edges){
 	if (!nodes){
 		nodes = data.nodes;
 	}
+
     let paths = exports.getPermutations(nodes);
 	
     let ponderedPaths = [];
@@ -44,19 +84,19 @@ exports.getPonderedPaths = function(nodes, edges){
     let duration = 0;
 
 	for (let i = 0; i < paths.length; i++) {
-        var edge = exports.getEdge(origin,paths[i][0].name,edges);
+        var edge = exports.getEdge(getOrigin(),paths[i][0],edges);
 		weight = edge.weight;
         duration = edge.duration;
         operators.add(edge.operator);
         
 		for (let j = 1; j < paths[i].length; j++){
-            edge = exports.getEdge(paths[i][j-1].name,paths[i][j].name,edges);
+            edge = exports.getEdge(paths[i][j-1],paths[i][j],edges);
 			weight += edge.weight;
             duration += edge.duration;
             operators.add(edge.operator);
 		}
         
-        edge = exports.getEdge(paths[i][paths[i].length-1].name, destination,edges);
+        edge = exports.getEdge(paths[i][paths[i].length-1], destination,edges);
 		weight += edge.weight;
         duration += edge.duration;
         operators.add(edge.operator);
@@ -72,16 +112,23 @@ exports.getPonderedPaths = function(nodes, edges){
 	return ponderedPaths;
 }
 
-exports.getMinPaths = function(nodes, edges) {
-	var o = nodes.filter(function(city){ return city.isOrigin; });
-	if (o.length > 0) {
-		origin = o[0];
-	}
-	var d = nodes.filter(function(city){ return city.isDestination; });
-	if (d.length > 0) {
-		destination = d[0];
+var getDestinationName = function(){
+	if (destination){
+		return destination.name;
 	}
 
+	return 'BCN';
+}
+
+var getOrigin = function(){
+	if (origin){
+		return origin;
+	}
+
+	return defaultOrigin;
+}
+
+exports.getMinPaths = function(nodes, edges) {
 	let ponderedPaths = exports.getPonderedPaths(nodes,edges);
 
 	let MIN = 99999999;
@@ -97,7 +144,7 @@ exports.getMinPaths = function(nodes, edges) {
         }
 	}
 
-	console.log(min_paths);
+	// console.log(min_paths);
 	return min_paths;
 }
 

@@ -43,31 +43,31 @@
 					<tbody>
 						<% for(var i=0; i<edges.length; i++) {%>
 						<tr id='addr0'>
-							<td <% if (edges[i].source === originCity.name) { %> class="origin" <% }%> >
-								<%= edges[i].source %>
+							<td <% if (isStartOrEndCity(edges[i].from)) { %> class="origin" <% }%> >
+								<%= edges[i].from %>
 							</td>
-							<td <% if (edges[i].destination === destinationCity.name) { %> class="origin" <% }%> >
-								<%= edges[i].destination %>
+							<td <% if (isStartOrEndCity(edges[i].to)) { %> class="origin" <% }%> >
+								<%= edges[i].to %>
 							</td>
 							<td>
 								<% if(edges[i].operator){%>
 									<%= edges[i].operator %>
 								<%} else { %>
-									<input type="text" name='operator'  placeholder='Operador' class="form-control" required="true"/>
+									<input type="text" name='operator'  placeholder='Operador' class="form-control" />
 								<% } %>
 							</td>
 							<td>
 								<% if(edges[i].duration){%>
 									<%= edges[i].duration %>
 								<%} else { %>
-									<input type="text" name='duration' placeholder='Duración' class="form-control" required="true"/>
+									<input type="text" name='duration' placeholder='Duración' class="form-control" />
 								<% } %>
 							</td>
 							<td>
-								<% if(edges[i].price){%>
-									<%= edges[i].price %>
+								<% if(edges[i].weight){%>
+									<%- edges[i].weight %>
 								<%} else { %>
-									<input type="text" name='price' placeholder='Precio' class="form-control" required="true"/>
+									<input type="number" step="any" name='weight' placeholder='Precio' class="form-control" required="true"/>
 								<% } %>
 							</td>
 							</td>
@@ -80,7 +80,9 @@
 				<input type="submit" name="calculate" value="Calcular caminos"/>
 			</form>
 			<div class="results">
-				<%= results %>
+				<% for(var i = 0; i<results.length; i++){%>
+					<%=results[i].weight%> - <%= getPath(results[i].path)%> <br/>
+					<%} %>
 			</div>
 		</div>
 	</body>

@@ -32,41 +32,53 @@ app.get('/', function(req, res) {
     res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
-var results;
-var cities = [{name:'BCN'}, {name:'MIL'}];
+var results = [];
+var cities = [{name:'ROM'}, {name:'MIL'}];
 var permutations, edges;
 
 var calculatePermutations = function(){
     permutations = combinatorial.getPermutations(cities);
-    console.log('permutations:');
-    console.log(permutations);
     edges = [];
-    for (var i=0; i<permutations.length;i++){
-        edges.push({
-            source: permutations[i][0].name,
-            destination: permutations[i][1].name,
-            operator: '',
-            duration: '',
-            price: ''
-        });
-    }
-
+    edges = permutations.map(function(p) {
+        return {from:p[0].name, to: p[1].name, operator:'', duration:'', weight:null};
+    });
+    edges = edges.concat(combinatorial.completeEdges());
 }
 
 app.get('/paths', function(req, res) {
     calculatePermutations();
-    var originCity = cities.filter(function(city){return city.isOrigin}).length > 0 ? cities.filter(function(city){return city.isOrigin})[0] : '';
-    var destinationCity = cities.filter(function(city){return city.isDestination}).length > 0 ? cities.filter(function(city){return city.isDestination})[0] : '';
+    var destinationCity, originCity;
+    for(var i = 0; i<cities.length; i++){
+        if (cities[i].isOrigin){
+            originCity = cities[i];
+        }
+        if (cities[i].isDestination){
+            destinationCity = cities[i];
+        }
+    }
     
     var locals = {
         cities: cities,
         edges: edges,
         results: results,
-        originCity: originCity,
-        destinationCity: destinationCity
+        originCity: originCity ? originCity : '',
+        destinationCity: destinationCity ? destinationCity : '',
+        isDefault: function(name){
+            return (!this.originCity && name === 'BCN') || (!this.destinationCity && name === 'BCN');
+        },
+        isStartOrEndCity: function(name) {
+            return this.isDefault(name) || name === this.originCity.name || name === this.destinationCity.name;
+        },
+        getPath: function(array) {
+            var path = '';
+            for (var i= 0; i<array.length; i++){
+                path = path.concat(array[i].name).concat('-');;
+            }
+            return path.slice(0, -1);
+        }
+
     }
     res.render('./paths.ejs', locals);
-    // res.send(combinatorial.getFirstMinPaths());
 });
 
 app.get('/add-city', function(req, res){

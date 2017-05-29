@@ -14,37 +14,37 @@ describe('combinatorial', function () {
 
     describe('weights', function () {
         it('if the edge wanted has been pased, it returns the right weight', function () {
-            expect(combinatorial.getEdge('BCN', 'MIL', data.edges).weight).to.equal(5.1);
+            expect(combinatorial.getEdge(data.BCN, data.MIL, data.edges).weight).to.equal(5.1);
         });
     });
 
     describe('edges', function () {
         it('must be return the wanted edged', function(){
-            expect(combinatorial.getEdge('BCN', 'MIL', data.edges).destination).to.equals('MIL');
-            expect(combinatorial.getEdge('BCN', 'MIL', data.edges).source).to.equals('BCN');
+            expect(combinatorial.getEdge(data.BCN, data.MIL, data.edges).to).to.equals(data.MIL.name);
+            expect(combinatorial.getEdge(data.BCN, data.MIL, data.edges).from).to.equals(data.BCN.name);
         });
         it('must failed in order to wanted edge is no present', function(){
             assert.throws(function(){
-                combinatorial.getEdge('ROM', 'MIL', data.noEdge);
+                combinatorial.getEdge(data.ROM, data.MIL, data.noEdge);
             }, Error, 'There is no information about edge between ROM and MIL');
         });
         it('must failed in order to t   here is more than one entries for the same pair of cities', function () {
             assert.throws(function () {
-                combinatorial.getEdge('BCN', 'MIL', data.moreThanOneEdges);
-            }, Error, 'There are more than one price for BCN and MIL');
+                combinatorial.getEdge(data.BCN, data.MIL, data.moreThanOneEdges);
+            }, Error, 'There are more than one weight for BCN and MIL');
         });
         
     });
     
     describe('operators', function () {
         it('if the edge wanted has been pased, it returns the right operator', function () {
-            expect(combinatorial.getEdge('BCN', 'MIL', data.edges).operator).to.equal('Ryanair');
+            expect(combinatorial.getEdge(data.BCN, data.MIL, data.edges).operator).to.equal('Ryanair');
         });
     });
     
     describe('durations', function () {
         it('if the edge wanted has been pased, it returns the right duration', function () {
-            expect(combinatorial.getEdge('BCN', 'MIL', data.edges).duration).to.equal(105);
+            expect(combinatorial.getEdge(data.BCN, data.MIL, data.edges).duration).to.equal(105);
         });
     });
 
